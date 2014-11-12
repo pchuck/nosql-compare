@@ -2,43 +2,43 @@
 #
 #   js queries, map/reduce and aggregation
 #
-DB_HOST=localhost:27017
-DB_NAME=demo
+MDB_HOST=localhost:27017
+MDB_NAME=demo
 
 start:
-	mongod --dbpath ./mdb-db &
+	mongod --config conf/mongod.conf &
 
 client:
-	mongo $(DB_HOST)
+	mongo $(MDB_HOST)
 
 create_db:
-	echo "use demo" | mongo $(DB_HOST)
+	echo "use demo" | mongo $(MDB_HOST)
 
 create_collection:
-	mongo $(DB_HOST) scripts/create_collection.js
+	mongo $(MDB_HOST) js/create_collection.js
 
 insert_data:
-	mongo $(DB_HOST) scripts/create_testdata.js
+	mongo $(MDB_HOST) js/create_testdata.js
 
 initialize: create_db create_collection insert_data
 
 dump_data:
-#	mongo $(DB_HOST)/$(DB_NAME) --eval "db.userdata.find()"
-	mongo $(DB_HOST)/$(DB_NAME) scripts/dump_testdata.js
+#	mongo $(MDB_HOST)/$(MDB_NAME) --eval "db.userdata.find()"
+	mongo $(MDB_HOST)/$(MDB_NAME) js/dump_testdata.js
 
 find_user:
-	mongo $(DB_HOST)/$(DB_NAME) scripts/find_user.js
+	mongo $(MDB_HOST)/$(MDB_NAME) js/find_user.js
 
 sort_users:
-	mongo $(DB_HOST)/$(DB_NAME) scripts/sort_users.js
+	mongo $(MDB_HOST)/$(MDB_NAME) js/sort_users.js
 
 joins_per_month:
-	mongo $(DB_HOST)/$(DB_NAME) scripts/joins_per_month.js
+	mongo $(MDB_HOST)/$(MDB_NAME) js/joins_per_month.js
 
 top_interests:
-	mongo $(DB_HOST)/$(DB_NAME) scripts/top_interests.js
+	mongo $(MDB_HOST)/$(MDB_NAME) js/top_interests.js
 
 clean:
-#	echo "use demo; db.dropDatabase();" | mongo $(DB_HOST)
-	mongo $(DB_HOST)/$(DB_NAME) scripts/drop_database.js
+#	echo "use demo; db.dropDatabase();" | mongo $(MDB_HOST)
+	mongo $(MDB_HOST)/$(MDB_NAME) js/drop_database.js
 

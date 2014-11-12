@@ -1,0 +1,28 @@
+use admin
+db.createUser( {
+    user: "siteUserAdmin",
+    pwd: "<password>",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  });
+db.createUser( {
+    user: "siteRootAdmin",
+    pwd: "<password>",
+    roles: [ { role: "root", db: "admin" } ]
+  });
+
+use demo
+db.createUser(
+  {
+    user: "demoAdmin",
+    pwd: "<password>",
+    roles:
+    [
+      {
+        role: "dbOwner",
+        db: "demo"
+      }
+    ]
+  }
+)
+
+

@@ -1,0 +1,35 @@
+# nosql/mongodb example
+#
+#   js queries, map/reduce and aggregation
+#
+# secure config
+# 1. enable 'auth=false' in config
+# 2. 'make -f makefile-secure initialize'
+# 3. mongo localhost:27018 and execute scripts/create_admins
+# 4. enable 'auth=true' in config
+# 5. restart mongod
+# 6. set 'MDB_PASS' in environment variable
+# 7. 'make -f makefile-secure dump_data'
+
+MDB_HOST=localhost:27018
+MDB_NAME=demo
+MDB_USER=demoAdmin
+# MDB_PASS - set via environment variable
+
+start:
+	mongod --config conf/mongod-secure.conf &
+
+create_db:
+	echo "use demo" | mongo $(MDB_HOST)
+
+create_collection:
+	mongo $(MDB_HOST) js/create_collection.js
+
+insert_data:
+	mongo $(MDB_HOST) js/create_testdata.js
+
+initialize: create_db create_collection insert_data
+
+dump_data:
+#	mongo $(MDB_HOST)/$(MDB_NAME) --eval "db.userdata.find()"
+	mongo -u demoAdmin -p ${MDB_PASS} $(MDB_HOST)/$(MDB_NAME) js/dump_testdata.js
